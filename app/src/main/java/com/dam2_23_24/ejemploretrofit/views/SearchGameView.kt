@@ -25,10 +25,10 @@ import com.dam2_23_24.ejemploretrofit.viewModel.GamesViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchGameView(viewModel: GamesViewModel, navController: NavController){
+fun SearchGameView(viewModel: GamesViewModel, navController: NavController) {
 
-    var query by remember { mutableStateOf("") }
-    var active by remember { mutableStateOf(false) }
+    val query by viewModel.query.collectAsState()
+    val active by viewModel.active.collectAsState()
     val games by viewModel.games.collectAsState()
 
     SearchBar(
@@ -36,31 +36,32 @@ fun SearchGameView(viewModel: GamesViewModel, navController: NavController){
             .fillMaxWidth()
             .padding(16.dp),
         query = query,
-        onQueryChange = { query = it } ,
-        onSearch = { active = false },
+        onQueryChange = { viewModel.setQuery(it) },
+        onSearch = { viewModel.setActive(false) },
         active = active,
-        onActiveChange = { active = it },
+        onActiveChange = { viewModel.setActive(it) },
         placeholder = { Text(text = "Search") },
         leadingIcon = {
             Icon(imageVector = Icons.Default.Search, contentDescription = "")
         },
         trailingIcon = {
             Icon(imageVector = Icons.Default.Close, contentDescription = "",
-            modifier = Modifier.clickable { navController.popBackStack() }
-                )
+                modifier = Modifier.clickable { navController.popBackStack() }
+            )
         }
     ) {
-        if(query.isNotEmpty()){
+        if (query.isNotEmpty()) {
             val filterGames = games.filter { it.name.contains(query, ignoreCase = true) }
             filterGames.forEach {
-                    Text(text = it.name,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 10.dp, start = 10.dp)
-                            .clickable {
-                                navController.navigate("DetailView/${it.id}")
-                            }
-                        )
+                Text(text = it.name,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(bottom = 10.dp, start = 10.dp)
+                        .clickable {
+                            navController.navigate("DetailView/${it.id}")
+                        }
+                )
             }
         }
     }

@@ -13,6 +13,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+    // DCS - Inyección de dependencias de Dagger Hilt.
 
     @Singleton
     @Provides

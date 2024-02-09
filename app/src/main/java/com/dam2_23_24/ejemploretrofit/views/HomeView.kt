@@ -37,6 +37,7 @@ fun HomeView(viewModel: GamesViewModel, navController: NavController){
 @Composable
 fun ContentHomeView(viewModel: GamesViewModel, pad:PaddingValues, navController: NavController){
     val games by viewModel.games.collectAsState()
+
     LazyColumn(
         modifier = Modifier
             .padding(pad)

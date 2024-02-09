@@ -10,5 +10,8 @@ class Constants {
     }
 }
 
+// DCS - Dirección web con API KEY para traer todos los juegos...
 // https://api.rawg.io/api/games?key=176671a1699f4c3ea0fb1c6297db6c4a
+
+// DCS - Dirección web con API KEY para traer infor de un solo juego por su id...
 // https://api.rawg.io/api/games/1223?key=176671a1699f4c3ea0fb1c6297db6c4a

@@ -5,51 +5,58 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dam2_23_24.ejemploretrofit.model.GameList
+import com.dam2_23_24.ejemploretrofit.model.GameInfo
 import com.dam2_23_24.ejemploretrofit.repository.GamesRepository
 import com.dam2_23_24.ejemploretrofit.state.GameState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class GamesViewModel @Inject constructor(private val repo: GamesRepository) : ViewModel() {
 
-    private val _games = MutableStateFlow<List<GameList>>(emptyList())
-    val games = _games.asStateFlow()
+    companion object {
+        // Definición de valores por defecto como constantes
+        const val DEFAULT_METACRITIC = 111
+        const val DEFAULT_WEBSITE = "sin web"
+    }
+
+    private val _games = MutableStateFlow<List<GameInfo>>(emptyList())
+    val games: StateFlow<List<GameInfo>> = _games.asStateFlow()
 
     var state by mutableStateOf(GameState())
         private set
+
+    val query = MutableStateFlow("")
+    val active = MutableStateFlow(false)
 
     init {
         fetchGames()
     }
 
     private fun fetchGames(){
-        viewModelScope.launch {
-            withContext(Dispatchers.IO){
-                val result = repo.getGames()
-                _games.value = result ?: emptyList()
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repo.getGames()
+            _games.value = result ?: emptyList()
         }
     }
 
     fun getGameById(id : Int){
-        viewModelScope.launch {
-            withContext(Dispatchers.IO){
-                val result = repo.getGameById(id)
-                state = state.copy(
-                    name = result?.name ?: "",
-                    description_raw = result?.description_raw ?: "",
-                    metacritic = result?.metacritic ?: 111,
-                    website = result?.website ?: "sin web",
-                    background_image = result?.background_image ?: "",
-                )
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repo.getGameById(id)
+            state = state.copy(
+                name = result?.name ?: "",
+                description_raw = result?.description_raw ?: "",
+                //DCS - las valoraciones van de 0 a 100, ponemos un valor por defecto fuera del rango
+                //Podríamos después comprobar si es 111 querrá decir que no tiene ninguna valoración.
+                metacritic = result?.metacritic ?: DEFAULT_METACRITIC,
+                website = result?.website ?: DEFAULT_WEBSITE,
+                background_image = result?.background_image ?: ""
+            )
         }
     }
 
@@ -57,10 +64,20 @@ class GamesViewModel @Inject constructor(private val repo: GamesRepository) : Vi
         state = state.copy(
             name =  "",
             description_raw =  "",
-            metacritic =  111,
-            website =  "",
+            metacritic =  DEFAULT_METACRITIC,
+            website =  DEFAULT_WEBSITE,
             background_image = "",
         )
+    }
+
+    // Función para actualizar la query
+    fun setQuery(newQuery: String) {
+        query.value = newQuery
+    }
+
+    // Función para actualizar el estado active
+    fun setActive(newActive: Boolean) {
+        active.value = newActive
     }
 
 }

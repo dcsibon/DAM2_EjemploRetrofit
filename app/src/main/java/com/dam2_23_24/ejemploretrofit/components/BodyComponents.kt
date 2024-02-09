@@ -33,13 +33,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
-import com.dam2_23_24.ejemploretrofit.model.GameList
+import com.dam2_23_24.ejemploretrofit.model.GameInfo
 import com.dam2_23_24.ejemploretrofit.util.Constants.Companion.CUSTOM_BLACK
 import com.dam2_23_24.ejemploretrofit.util.Constants.Companion.CUSTOM_GREEN
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainTopBar(title: String, showBackButton: Boolean = false, onClickBackButton: () -> Unit,onClickAction: () -> Unit) {
+fun MainTopBar(
+    title: String,
+    showBackButton: Boolean = false,
+    onClickBackButton: () -> Unit,
+    onClickAction: () -> Unit
+) {
     TopAppBar(
         title = { Text(text = title, color = Color.White, fontWeight = FontWeight.ExtraBold) },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
@@ -72,7 +77,7 @@ fun MainTopBar(title: String, showBackButton: Boolean = false, onClickBackButton
 
 
 @Composable
-fun CardGame(game: GameList, onClick: () -> Unit) {
+fun CardGame(game: GameInfo, onClick: () -> Unit) {
     Card(
         shape = RoundedCornerShape(5.dp),
         modifier = Modifier
@@ -81,14 +86,24 @@ fun CardGame(game: GameList, onClick: () -> Unit) {
             .clickable { onClick() }
     ) {
         Column {
-            MainImage(image = game.background_image)
+            MainImage(imageUrl = game.background_image)
         }
     }
 }
 
 @Composable
-fun MainImage(image: String) {
-    val image = rememberImagePainter(data = image)
+fun MainImage(imageUrl: String) {
+    // DCS - rememberImagePainter es una función de la biblioteca de Coil (Coil Image Loader)
+    // utilizada en Jetpack Compose para cargar y mostrar imágenes de manera eficiente.
+    // Coil es una biblioteca de carga de imágenes para Android que es compatible con Jetpack Compose.
+    //
+    // La función rememberImagePainter se encarga de cargar la imagen especificada de manera asíncrona,
+    // permitiendo que la UI se mantenga responsiva mientras la imagen se está cargando.
+
+    // Coil maneja internamente un sistema de caché para optimizar la carga de imágenes.
+    // Esto significa que si una imagen ya ha sido cargada anteriormente, puede ser recuperada
+    // rápidamente de la caché en lugar de ser descargada o cargada de nuevo.
+    val image = rememberImagePainter(data = imageUrl)
 
     Image(
         painter = image,
@@ -98,12 +113,12 @@ fun MainImage(image: String) {
             .fillMaxWidth()
             .height(250.dp)
     )
-
 }
 
 @Composable
 fun MetaWebsite(url: String) {
-
+    // DCS - Preparamos el intent que después se abrirá en el navegador web predeterminado del
+    // dispositivo y navegará a la URL especificada...
     val context = LocalContext.current
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
 
@@ -117,10 +132,10 @@ fun MetaWebsite(url: String) {
         )
 
         Button(
-            onClick = { context.startActivity(intent) }, colors = ButtonDefaults.buttonColors(
+            onClick = { context.startActivity(intent) }, // DCS - Inicia la actividad del navegador.
+            colors = ButtonDefaults.buttonColors(
                 contentColor = Color.White,
                 containerColor = Color.Gray
-
             )
         ) {
             Text(text = "Sitio Web")
