@@ -1,13 +1,4 @@
 package com.dam2_23_24.ejemploretrofit.games.ui.state
-/*
-data class SingleGameState(
-    val name : String = "",
-    val description_raw : String = "",
-    val metacritic: Int = 0,
-    val website : String = "",
-    val background_image: String = ""
-)
-*/
 
 /**
  * Representa el estado de un juego individual en la UI, incluyendo detalles como el nombre, descripción,

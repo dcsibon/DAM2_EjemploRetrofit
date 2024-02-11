@@ -81,10 +81,20 @@ fun DetailView(viewModel: GamesViewModel, navController: NavController, id: Int)
 
 /**
  * Muestra el contenido detallado de un juego, incluyendo su imagen principal, sitio web, calificación y descripción.
- * Implementa un desplazamiento vertical para la descripción del juego.
+ * Este composable implementa un desplazamiento vertical para la descripción del juego, permitiendo al usuario
+ * explorar el contenido extenso sin restricciones de espacio de pantalla.
  *
- * @param pad Valores de relleno aplicados al contenido, generalmente proporcionados por el Scaffold.
- * @param viewModel ViewModel asociado que proporciona los datos del juego.
+ * La información detallada del juego se presenta a través de una interfaz de usuario coherente y atractiva,
+ * fomentando una experiencia de usuario inmersiva al explorar los detalles del juego seleccionado.
+ *
+ * @param pad Valores de relleno (PaddingValues) aplicados al contenido, generalmente proporcionados por el Scaffold.
+ *            Estos valores aseguran que el contenido tenga un espaciado adecuado del resto de los elementos de la UI,
+ *            mejorando la legibilidad y la estética general de la pantalla.
+ * @param singleGameState Objeto de estado único que contiene los detalles del juego específico a mostrar.
+ *                        Este parámetro lleva toda la información relevante del juego seleccionado, como
+ *                        la imagen principal, el sitio web, la calificación, y la descripción detallada.
+ *                        Al pasar directamente el estado del juego, se facilita la reutilización y la separación de
+ *                        la lógica de presentación de los datos, contribuyendo a un diseño de código más limpio y mantenible.
  */
 @Composable
 fun ContentDetailView(pad: PaddingValues, singleGameState: SingleGameState) {
