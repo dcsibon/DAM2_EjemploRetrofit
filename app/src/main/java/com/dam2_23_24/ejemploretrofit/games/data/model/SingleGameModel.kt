@@ -1,4 +1,4 @@
-package com.dam2_23_24.ejemploretrofit.model
+package com.dam2_23_24.ejemploretrofit.games.data.model
 
 data class SingleGameModel(
     val name : String,

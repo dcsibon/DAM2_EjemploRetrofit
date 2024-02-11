@@ -1,4 +1,4 @@
-package com.dam2_23_24.ejemploretrofit.components
+package com.dam2_23_24.ejemploretrofit.games.ui.views
 
 import android.content.Intent
 import android.net.Uri
@@ -33,10 +33,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
-import com.dam2_23_24.ejemploretrofit.model.GameInfo
-import com.dam2_23_24.ejemploretrofit.util.Constants.Companion.CUSTOM_BLACK
-import com.dam2_23_24.ejemploretrofit.util.Constants.Companion.CUSTOM_GREEN
+import com.dam2_23_24.ejemploretrofit.games.ui.state.GameInfoState
+import com.dam2_23_24.ejemploretrofit.games.data.util.Constants.Companion.CUSTOM_BLACK
+import com.dam2_23_24.ejemploretrofit.games.data.util.Constants.Companion.CUSTOM_GREEN
 
+/**
+ * Define un componente de barra superior para las vistas principales de la aplicación,
+ * con soporte opcional para un botón de retorno.
+ *
+ * @param title Título a mostrar en la barra superior.
+ * @param showBackButton Define si se muestra el botón de retorno.
+ * @param onClickBackButton Acción a ejecutar al hacer clic en el botón de retorno.
+ * @param onClickAction Acción a ejecutar al hacer clic en el botón de acción.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainTopBar(
@@ -75,9 +84,14 @@ fun MainTopBar(
     )
 }
 
-
+/**
+ * Muestra una tarjeta para un juego, con una acción al hacer clic.
+ *
+ * @param game Información del juego a mostrar.
+ * @param onClick Acción a ejecutar al hacer clic en la tarjeta.
+ */
 @Composable
-fun CardGame(game: GameInfo, onClick: () -> Unit) {
+fun CardGame(game: GameInfoState, onClick: () -> Unit) {
     Card(
         shape = RoundedCornerShape(5.dp),
         modifier = Modifier
@@ -91,6 +105,11 @@ fun CardGame(game: GameInfo, onClick: () -> Unit) {
     }
 }
 
+/**
+ * Carga y muestra una imagen principal para un juego usando Coil.
+ *
+ * @param imageUrl URL de la imagen a cargar y mostrar.
+ */
 @Composable
 fun MainImage(imageUrl: String) {
     // DCS - rememberImagePainter es una función de la biblioteca de Coil (Coil Image Loader)
@@ -115,6 +134,11 @@ fun MainImage(imageUrl: String) {
     )
 }
 
+/**
+ * Muestra un enlace a un sitio web meta, permitiendo al usuario navegar a dicho sitio.
+ *
+ * @param url URL del sitio web a abrir.
+ */
 @Composable
 fun MetaWebsite(url: String) {
     // DCS - Preparamos el intent que después se abrirá en el navegador web predeterminado del
@@ -143,6 +167,11 @@ fun MetaWebsite(url: String) {
     }
 }
 
+/**
+ * Muestra una tarjeta con la puntuación metacrítica de un juego.
+ *
+ * @param metascore Puntuación metacrítica del juego.
+ */
 @Composable
 fun ReviewCard(metascore: Int) {
     Card(
@@ -166,21 +195,3 @@ fun ReviewCard(metascore: Int) {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
